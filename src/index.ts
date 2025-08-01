@@ -1,4 +1,3 @@
-
 interface User {
     type: 'user';
     name: string;
@@ -15,22 +14,22 @@ interface Admin {
 
 export type Person = User | Admin;
 
- const persons: Person[] = [
+const persons: Person[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
     { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
     { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' },
-    { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' }
+    { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' },
+    { type: 'user', name: 'Wilson', age: 23, occupation: 'Ball' },
+    { type: 'admin', name: 'Agent Smith', age: 23, role: 'Administrator' }
 ];
 
-function isAdmin(person: Person) {
-    return person.type === 'admin';
-}
- function isUser(person: Person) {
-    return person.type === 'user';
-}
+// Type guards
+const isAdmin = (person: Person): person is Admin => person.type === 'admin';
+const isUser = (person: Person): person is User => person.type === 'user';
 
+// Log function
 function logPerson(person: Person) {
-    let additionalInformation: string = '';
+    let additionalInformation = '';
     if (isAdmin(person)) {
         additionalInformation = person.role;
     }
@@ -40,10 +39,17 @@ function logPerson(person: Person) {
     console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
 }
 
-console.log('Admins:');
-persons.filter(isAdmin).forEach(logPerson);
+// Flexible user filtering
+function filterUsers(persons: Person[], criteria: Partial<User>): User[] {
+    return persons
+        .filter(isUser)
+        .filter((user) =>
+            Object.entries(criteria).every(([key, value]) => {
+                return user[key as keyof User] === value;
+            })
+        );
+}
 
-console.log();
-
-console.log('Users:');
-persons.filter(isUser).forEach(logPerson);
+// ✅ Now this works
+console.log('Users of age 23:');
+filterUsers(persons, { age: 23 }).forEach(logPerson);
