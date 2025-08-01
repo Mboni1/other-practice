@@ -1,36 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const persons = [
-    {
-        name: 'Max Mustermann',
-        age: 25,
-        occupation: 'Chimney sweep'
-    },
-    {
-        name: 'Jane Doe',
-        age: 32,
-        role: 'Administrator'
-    },
-    {
-        name: 'Kate Müller',
-        age: 23,
-        occupation: 'Astronaut'
-    },
-    {
-        name: 'Bruce Willis',
-        age: 64,
-        role: 'World saver'
-    }
+    { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
+    { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
+    { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' },
+    { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' }
 ];
+function isAdmin(person) {
+    return person.type === 'admin';
+}
+function isUser(person) {
+    return person.type === 'user';
+}
 function logPerson(person) {
-    let additionalInformation;
-    if ("role" in person) {
+    let additionalInformation = '';
+    if (isAdmin(person)) {
         additionalInformation = person.role;
     }
-    else {
+    if (isUser(person)) {
         additionalInformation = person.occupation;
     }
     console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
 }
-persons.forEach(logPerson);
+console.log('Admins:');
+persons.filter(isAdmin).forEach(logPerson);
+console.log();
+console.log('Users:');
+persons.filter(isUser).forEach(logPerson);
 //# sourceMappingURL=index.js.map
