@@ -1,3 +1,4 @@
+
 interface User {
     type: 'user';
     name: string;
@@ -12,48 +13,94 @@ interface Admin {
     role: string;
 }
 
-export type Person = User | Admin;
+// Updated logging functions to handle potential undefined values
+function logUser(user: User) {
+    const pos = users.findIndex(u => 
+        u.name === user.name && 
+        u.age === user.age && 
+        u.occupation === user.occupation
+    ) + 1;
+    console.log(` - #${pos || '?'} User: ${user.name}, ${user.age}, ${user.occupation}`);
+}
 
-const persons: Person[] = [
-    { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
-    { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
-    { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' },
-    { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' },
-    { type: 'user', name: 'Wilson', age: 23, occupation: 'Ball' },
-    { type: 'admin', name: 'Agent Smith', age: 23, role: 'Anti-virus engineer' }
+function logAdmin(admin: Admin) {
+    const pos = admins.findIndex(a => 
+        a.name === admin.name && 
+        a.age === admin.age && 
+        a.role === admin.role
+    ) + 1;
+    console.log(` - #${pos || '?'} Admin: ${admin.name}, ${admin.age}, ${admin.role}`);
+}
+
+const admins: Admin[] = [
+    {
+        type: 'admin',
+        name: 'Will Bruces',
+        age: 30,
+        role: 'Overseer'
+    },
+    {
+        type: 'admin',
+        name: 'Steve',
+        age: 40,
+        role: 'Steve'
+    }
 ];
 
-// Log function
-function logPerson(person: Person) {
-    console.log(
-        ` - ${person.name}, ${person.age}, ${person.type === 'admin' ? person.role : person.occupation}`
-    );
+const users: User[] = [
+    {
+        type: 'user',
+        name: 'Moses',
+        age: 70,
+        occupation: 'Desert guide'
+    },
+    {
+        type: 'user',
+        name: 'Superman',
+        age: 28,
+        occupation: 'Ordinary person'
+    }
+];
+
+// Swap function remains unchanged
+function swap<T, U>(v1: T, v2: U): [U, T] {
+    return [v2, v1];
 }
 
-// Generic filter function
-function filterPersons<T extends Person>(
-    persons: Person[],
-    personType: T['type'],
-    criteria: Partial<Omit<T, 'type'>>
-): T[] {
-    return persons
-        .filter((person): person is T => person.type === personType)
-        .filter((person) => {
-            return Object.entries(criteria).every(([key, value]) => {
-                return person[key as keyof typeof person] === value;
-            });
-        });
+// Updated test functions with non-null assertions
+function test1() {
+    console.log('test1:');
+    const [secondUser, firstAdmin] = swap(admins[0]!, users[1]!);
+    logUser(secondUser);
+    logAdmin(firstAdmin);
 }
 
-// Usage
-const usersOfAge23 = filterPersons<User>(persons, 'user', { age: 23 });
-const adminsOfAge23 = filterPersons<Admin>(persons, 'admin', { age: 23 });
+function test2() {
+    console.log('test2:');
+    const [secondAdmin, firstUser] = swap(users[0]!, admins[1]!);
+    logAdmin(secondAdmin);
+    logUser(firstUser);
+}
 
-console.log('Users of age 23:');
-usersOfAge23.forEach(logPerson);
+function test3() {
+    console.log('test3:');
+    const [secondUser, firstUser] = swap(users[0]!, users[1]!);
+    logUser(secondUser);
+    logUser(firstUser);
+}
 
-console.log();
+function test4() {
+    console.log('test4:');
+    const [firstAdmin, secondAdmin] = swap(admins[1]!, admins[0]!);
+    logAdmin(firstAdmin);
+    logAdmin(secondAdmin);
+}
 
-console.log('Admins of age 23:');
-adminsOfAge23.forEach(logPerson);
+function test5() {
+    console.log('test5:');
+    const [stringValue, numericValue] = swap(123, 'Hello World');
+    console.log(` - String: ${stringValue}`);
+    console.log(` - Numeric: ${numericValue}`);
+}
 
+[test1, test2, test3, test4, test5].forEach((test) => test());
