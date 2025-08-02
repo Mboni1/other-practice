@@ -1,30 +1,80 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const persons = [
-    { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
-    { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
-    { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' },
-    { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' }
+// Updated logging functions to handle potential undefined values
+function logUser(user) {
+    const pos = users.findIndex(u => u.name === user.name &&
+        u.age === user.age &&
+        u.occupation === user.occupation) + 1;
+    console.log(` - #${pos || '?'} User: ${user.name}, ${user.age}, ${user.occupation}`);
+}
+function logAdmin(admin) {
+    const pos = admins.findIndex(a => a.name === admin.name &&
+        a.age === admin.age &&
+        a.role === admin.role) + 1;
+    console.log(` - #${pos || '?'} Admin: ${admin.name}, ${admin.age}, ${admin.role}`);
+}
+const admins = [
+    {
+        type: 'admin',
+        name: 'Will Bruces',
+        age: 30,
+        role: 'Overseer'
+    },
+    {
+        type: 'admin',
+        name: 'Steve',
+        age: 40,
+        role: 'Steve'
+    }
 ];
-function isAdmin(person) {
-    return person.type === 'admin';
-}
-function isUser(person) {
-    return person.type === 'user';
-}
-function logPerson(person) {
-    let additionalInformation = '';
-    if (isAdmin(person)) {
-        additionalInformation = person.role;
+const users = [
+    {
+        type: 'user',
+        name: 'Moses',
+        age: 70,
+        occupation: 'Desert guide'
+    },
+    {
+        type: 'user',
+        name: 'Superman',
+        age: 28,
+        occupation: 'Ordinary person'
     }
-    if (isUser(person)) {
-        additionalInformation = person.occupation;
-    }
-    console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
+];
+// Swap function remains unchanged
+function swap(v1, v2) {
+    return [v2, v1];
 }
-console.log('Admins:');
-persons.filter(isAdmin).forEach(logPerson);
-console.log();
-console.log('Users:');
-persons.filter(isUser).forEach(logPerson);
+// Updated test functions with non-null assertions
+function test1() {
+    console.log('test1:');
+    const [secondUser, firstAdmin] = swap(admins[0], users[1]);
+    logUser(secondUser);
+    logAdmin(firstAdmin);
+}
+function test2() {
+    console.log('test2:');
+    const [secondAdmin, firstUser] = swap(users[0], admins[1]);
+    logAdmin(secondAdmin);
+    logUser(firstUser);
+}
+function test3() {
+    console.log('test3:');
+    const [secondUser, firstUser] = swap(users[0], users[1]);
+    logUser(secondUser);
+    logUser(firstUser);
+}
+function test4() {
+    console.log('test4:');
+    const [firstAdmin, secondAdmin] = swap(admins[1], admins[0]);
+    logAdmin(firstAdmin);
+    logAdmin(secondAdmin);
+}
+function test5() {
+    console.log('test5:');
+    const [stringValue, numericValue] = swap(123, 'Hello World');
+    console.log(` - String: ${stringValue}`);
+    console.log(` - Numeric: ${numericValue}`);
+}
+[test1, test2, test3, test4, test5].forEach((test) => test());
 //# sourceMappingURL=index.js.map
