@@ -20,36 +20,40 @@ const persons: Person[] = [
     { type: 'user', name: 'Kate Müller', age: 23, occupation: 'Astronaut' },
     { type: 'admin', name: 'Bruce Willis', age: 64, role: 'World saver' },
     { type: 'user', name: 'Wilson', age: 23, occupation: 'Ball' },
-    { type: 'admin', name: 'Agent Smith', age: 23, role: 'Administrator' }
+    { type: 'admin', name: 'Agent Smith', age: 23, role: 'Anti-virus engineer' }
 ];
-
-// Type guards
-const isAdmin = (person: Person): person is Admin => person.type === 'admin';
-const isUser = (person: Person): person is User => person.type === 'user';
 
 // Log function
 function logPerson(person: Person) {
-    let additionalInformation = '';
-    if (isAdmin(person)) {
-        additionalInformation = person.role;
-    }
-    if (isUser(person)) {
-        additionalInformation = person.occupation;
-    }
-    console.log(` - ${person.name}, ${person.age}, ${additionalInformation}`);
+    console.log(
+        ` - ${person.name}, ${person.age}, ${person.type === 'admin' ? person.role : person.occupation}`
+    );
 }
 
-// Flexible user filtering
-function filterUsers(persons: Person[], criteria: Partial<User>): User[] {
+// Generic filter function
+function filterPersons<T extends Person>(
+    persons: Person[],
+    personType: T['type'],
+    criteria: Partial<Omit<T, 'type'>>
+): T[] {
     return persons
-        .filter(isUser)
-        .filter((user) =>
-            Object.entries(criteria).every(([key, value]) => {
-                return user[key as keyof User] === value;
-            })
-        );
+        .filter((person): person is T => person.type === personType)
+        .filter((person) => {
+            return Object.entries(criteria).every(([key, value]) => {
+                return person[key as keyof typeof person] === value;
+            });
+        });
 }
 
-// ✅ Now this works
+// Usage
+const usersOfAge23 = filterPersons<User>(persons, 'user', { age: 23 });
+const adminsOfAge23 = filterPersons<Admin>(persons, 'admin', { age: 23 });
+
 console.log('Users of age 23:');
-filterUsers(persons, { age: 23 }).forEach(logPerson);
+usersOfAge23.forEach(logPerson);
+
+console.log();
+
+console.log('Admins of age 23:');
+adminsOfAge23.forEach(logPerson);
+
