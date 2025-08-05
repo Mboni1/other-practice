@@ -1,23 +1,31 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.users = void 0;
+exports.persons = void 0;
 exports.logPerson = logPerson;
-const users = [
+exports.persons = [
     {
         name: 'Max Mustermann',
         age: 25,
         occupation: 'Chimney sweep'
     },
     {
+        name: 'Jane Doe',
+        age: 32,
+        role: 'Administrator'
+    },
+    {
         name: 'Kate Müller',
         age: 23,
         occupation: 'Astronaut'
+    },
+    {
+        name: 'Bruce Willis',
+        age: 64,
+        role: 'World saver'
     }
 ];
-exports.users = users;
-function logPerson(user) {
-    console.log(` - ${user.name}, ${user.age}`);
+function logPerson(person) {
+    console.log(` - ${person.name}, ${person.age}`);
 }
-console.log('Users:');
-users.forEach(logPerson);
+exports.persons.forEach(logPerson);
 //# sourceMappingURL=index.js.map

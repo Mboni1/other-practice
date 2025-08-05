@@ -1,30 +1,119 @@
-import {IsTypeEqual, FirstArgument, typeAssert} from 'type-assertions';
-import {Person, logPerson, persons} from './index';
+import {IsTypeEqual, IsTypeAssignable, Not, typeAssert} from 'type-assertions';
+import {
+    ApiResponse,
+    requestAdmins,
+    requestUsers,
+    requestCoffeeMachineQueueLength,
+    requestCurrentServerTime
+} from './index';
 
 typeAssert<
-    IsTypeEqual<
-        Person,
-        {name: string; age: number} & ({occupation: string} | {role: string})
+    IsTypeAssignable<
+        ApiResponse<number>,
+        {status: 'success'; data: number}
+    >
+>();
+typeAssert<
+    IsTypeAssignable<
+        ApiResponse<number>,
+        {status: 'error'; error: string}
+    >
+>();
+typeAssert<
+    IsTypeAssignable<
+        ApiResponse<boolean>,
+        {status: 'success'; data: boolean}
+    >
+>();
+typeAssert<
+    IsTypeAssignable<
+        ApiResponse<boolean>,
+        {status: 'error'; error: string}
+    >
+>();
+typeAssert<
+    Not<
+        IsTypeEqual<
+            ApiResponse<number>,
+            unknown
+        >
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        typeof persons,
-        ({name: string; age: number} & ({occupation: string} | {role: string}))[]
+        typeof requestAdmins,
+        (
+            callback: (
+                response: {
+                    status: 'success';
+                    data: {
+                            type: 'admin';
+                            name: string;
+                            age: number;
+                            role: string;
+                    }[]
+                } | {
+                    status: 'error';
+                    error: string;
+                }
+            ) => void
+        ) => void
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        FirstArgument<typeof logPerson>,
-        {name: string; age: number} & ({occupation: string} | {role: string})
+        typeof requestUsers,
+        (
+            callback: (
+                response: {
+                    status: 'success';
+                    data: {
+                            type: 'user';
+                            name: string;
+                            age: number;
+                            occupation: string;
+                    }[]
+                } | {
+                    status: 'error';
+                    error: string;
+                }
+            ) => void
+        ) => void
     >
 >();
 
 typeAssert<
     IsTypeEqual<
-        ReturnType<typeof logPerson>,
-        void
+        typeof requestCurrentServerTime,
+        (
+            callback: (
+                response: {
+                    status: 'success';
+                    data: number;
+                } | {
+                    status: 'error';
+                    error: string;
+                }
+            ) => void
+        ) => void
+    >
+>();
+
+typeAssert<
+    IsTypeEqual<
+        typeof requestCoffeeMachineQueueLength,
+        (
+            callback: (
+                response: {
+                    status: 'success';
+                    data: number;
+                } | {
+                    status: 'error';
+                    error: string;
+                }
+            ) => void
+        ) => void
     >
 >();

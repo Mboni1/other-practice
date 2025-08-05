@@ -5,4 +5,9 @@ const type_assertions_1 = require("type-assertions");
 (0, type_assertions_1.typeAssert)();
 (0, type_assertions_1.typeAssert)();
 (0, type_assertions_1.typeAssert)();
+(0, type_assertions_1.typeAssert)();
+(0, type_assertions_1.typeAssert)();
+(0, type_assertions_1.typeAssert)();
+(0, type_assertions_1.typeAssert)();
+(0, type_assertions_1.typeAssert)();
 //# sourceMappingURL=test.js.map

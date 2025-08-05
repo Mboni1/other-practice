@@ -1,10 +1,15 @@
-type User = {
+interface User {
     name: string;
     age: number;
     occupation: string;
-};
-declare const users: User[];
-declare function logPerson(user: User): void;
-export type { User };
-export { users, logPerson };
+}
+interface Admin {
+    name: string;
+    age: number;
+    role: string;
+}
+export type Person = User | Admin;
+export declare const persons: Person[];
+export declare function logPerson(person: Person): void;
+export {};
 //# sourceMappingURL=index.d.ts.map
