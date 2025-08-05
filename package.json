@@ -25,9 +25,9 @@
   "devDependencies": {
     "ts-node": "^10.9.2",
     "tsd": "^0.32.0",
+    "tsx": "^4.7.0",
     "type-fest": "^4.41.0",
-    "typescript": "^5.9.2",
-    "tsx": "^4.7.0"
+    "typescript": "^5.9.2"
   },
   "dependencies": {
     "type-assertions": "^1.1.0"
