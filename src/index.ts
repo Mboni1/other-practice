@@ -1,30 +1,44 @@
-type User = {
+
+
+interface User {
     name: string;
     age: number;
     occupation: string;
-};
+}
 
-const users: User[] = [
+interface Admin {
+    name: string;
+    age: number;
+    role: string;
+}
+
+export type Person = User | Admin;
+
+export const persons: Person[]  = [
     {
         name: 'Max Mustermann',
         age: 25,
         occupation: 'Chimney sweep'
     },
     {
+        name: 'Jane Doe',
+        age: 32,
+        role: 'Administrator'
+    },
+    {
         name: 'Kate Müller',
         age: 23,
         occupation: 'Astronaut'
+    },
+    {
+        name: 'Bruce Willis',
+        age: 64,
+        role: 'World saver'
     }
 ];
 
-function logPerson(user: User) {  // Changed from 'unknown' to 'User'
-    console.log(` - ${user.name}, ${user.age}`);
+export function logPerson(person: Person) {
+    console.log(` - ${person.name}, ${person.age}`);
 }
 
-console.log('Users:');
-users.forEach(logPerson);
-
-// Export if needed for other files
-export type { User };
-export { users, logPerson };
-
+persons.forEach(logPerson);
